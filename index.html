@@ -165,6 +165,7 @@
     </div>
 
     <form id="collarForm">
+
         <div class="section-title">Starting Position</div>
         <div class="input-group">
             <div class="input-field">
@@ -173,14 +174,14 @@
             </div>
             <div class="input-field">
                 <label for="firstSubLine">Sub-line</label>
-                <input type="number" id="firstSubLine" required min="0" value="2">
+                <input type="number" id="firstSubLine" required min="0" value="0">
             </div>
             <div class="input-field">
                 <label for="intST">Time (s)</label>
                 <input type="number" id="intST" required min="0" value="15">
             </div>
         </div>
-
+        <!-- <div class="input-group"> -->
         <div class="section-title">Ending Position</div>
         <div class="input-group">
             <div class="input-field">
@@ -189,11 +190,19 @@
             </div>
             <div class="input-field">
                 <label for="lastSubLine">Sub-line</label>
-                <input type="number" id="lastSubLine" required min="0" value="5">
+                <input type="number" id="lastSubLine" required min="0" value="4">
             </div>
             <div class="input-field">
                 <label for="intET">Time (s)</label>
                 <input type="number" id="intET" required min="0" value="69">
+            </div>
+        </div>
+        <!-- <div class="input-group">-->
+        <div class="section-title">Lines between main-lines?</div>
+        <div class="input-group">
+            <div class="input-field">
+                <label for="lineBetweenMainLines">how many lines in between main lines does your grinding machine have?</label>
+                <input type="number" id="lineBetweenMainLines" required min="0">
             </div>
         </div>
 
@@ -211,16 +220,19 @@
 
 <script>
     // Equivalent logic to your java line(a, b) function
-    function line(a, b) {
-        // 'a' means Main-lines while 'b' means sub-lines.
-        const lineBetweenMainLines = 4; 
-        return (((a - 1) * (lineBeteenMainLines + 1)) + 1) + b;
+    function line(mainLine, subLine, lineBetween) {
+        return (mainLine * (lineBetween+1) - lineBetween)+subLine;
     }
 
     document.getElementById('collarForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         // Parse Inputs
+
+        
+        // how many lines in between main lines does your grinding machine have?
+        const lineBetweenMainLines = parseInt(document.getElementById('lineBetweenMainLines').value);
+
         const firstMainLine = parseInt(document.getElementById('firstMainLine').value);
         const firstSubLine = parseInt(document.getElementById('firstSubLine').value);
         const intST = parseInt(document.getElementById('intST').value);
@@ -229,13 +241,21 @@
         const lastSubLine = parseInt(document.getElementById('lastSubLine').value);
         const intET = parseInt(document.getElementById('intET').value);
 
+        // if (firstSubLine > lineBetweenMainLines || lastSubLine > lineBetweenMainLines) {
+        //     document.getElementById('resultText').innerHTML = 
+        //         `<span class="error">Ang Sub-line ay hindi dapat lumagpas sa ${lineBetweenMainLines} (Lines in between).</span>`;
+        //     return;
+        // }
+
         // Logic replicate from Java
         const timeDifference = Math.abs(intST - intET);
-        
-        const line1 = line(firstMainLine, firstSubLine);
-        const line2 = line(lastMainLine, lastSubLine);
+        const line1 = line(firstMainLine, firstSubLine, lineBetweenMainLines);
+        const line2 = line(lastMainLine, lastSubLine, lineBetweenMainLines);
         const lineDifference = Math.abs(line1 - line2);
-
+        console.log("line 1: " + line1);
+        console.log("line 2: " + line2);
+        console.log("Time difference: " + timeDifference);
+        console.log("line difference: " + lineDifference);
         const resultText = document.getElementById('resultText');
 
         if (lineDifference === 0) {
@@ -246,7 +266,8 @@
         const secondsPerLine = timeDifference / lineDifference;
 
         // Output matching printf("Each line has ~%.2f seconds per line\n\n", secondsPerLine);
-        resultText.innerHTML = Each line has ~<strong>${secondsPerLine.toFixed(2)}</strong> seconds per line;
+        resultText.innerHTML = `Each line has ~<strong>${secondsPerLine.toFixed(2)}</strong> seconds per line`;
+        console.log(`Each line has ~<strong>${secondsPerLine.toFixed(2)}</strong> seconds per line`);
     });
 
     function resetForm() {
@@ -255,5 +276,5 @@
     }
 </script>
 
-</body>,
+</body>
 </html>
