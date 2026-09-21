@@ -8,4 +8,12 @@ has 19 main lines with 4 in between.
 
 so I need to ask as well sa users how many lines between
 main lines and how many major lines they have.
+
+update: okay na. na found out ko na di naman nagmamatter, pero it might matter sa recommendation feature update.
+
+
+I was working on naman on some automatic recommendation like where lines you should go.
+damang-dama ko ang kabobohan
+
+the code prototype is na sa test.js
 ===september 20, 2026
