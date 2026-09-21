@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Grinder Collar Calculator</title>
+    <style>
+        :root {
+            --bg-color: #f4f1ea;
+            --card-bg: #ffffff;
+            --primary-color: #4a2c2a;
+            --accent-color: #d39e82;
+            --text-color: #333333;
+            --border-color: #dddddd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .calculator-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .note {
+            background-color: #fcf8e3;
+            border-left: 4px solid #f0ad4e;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: #8a6d3b;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 4px;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .input-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #666;
+        }
+
+        input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .btn-calc {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-reset {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px dashed var(--border-color);
+        }
+
+        .result-box h2 {
+            margin: 0 0 8px 0;
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .error {
+            color: #d9534f;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h1>☕ Coffee Grinding Machine Calculator</h1>
+    
+    <div class="note">
+        <strong>Note:</strong> Ensure consistent tamping pressure (Light, Medium, or Hard) for accurate results.
+    </div>
+
+    <form id="collarForm">
+        <div class="section-title">Starting Position</div>
+        <div class="input-group">
+            <div class="input-field">
+                <label for="firstMainLine">Main-line</label>
+                <input type="number" id="firstMainLine" required min="0" value="1">
+            </div>
+            <div class="input-field">
+                <label for="firstSubLine">Sub-line</label>
+                <input type="number" id="firstSubLine" required min="0" value="2">
+            </div>
+            <div class="input-field">
+                <label for="intST">Time (s)</label>
+                <input type="number" id="intST" required min="0" value="15">
+            </div>
+        </div>
+
+        <div class="section-title">Ending Position</div>
+        <div class="input-group">
+            <div class="input-field">
+                <label for="lastMainLine">Main-line</label>
+                <input type="number" id="lastMainLine" required min="0" value="1">
+            </div>
+            <div class="input-field">
+                <label for="lastSubLine">Sub-line</label>
+                <input type="number" id="lastSubLine" required min="0" value="5">
+            </div>
+            <div class="input-field">
+                <label for="intET">Time (s)</label>
+                <input type="number" id="intET" required min="0" value="69">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-calc">Calculate</button>
+            <button type="button" class="btn-reset" onclick="resetForm()">Reset</button>
+        </div>
+    </form>
+
+    <div class="result-box" id="resultContainer">
+        <h2>Output</h2>
+        <div class="result-value" id="resultText">Enter values and click Calculate</div>
+    </div>
+</div>
+
+<script>
+    // Equivalent logic to your java line(a, b) function
+    function line(a, b) {
+        // 'a' means Main-lines while 'b' means sub-lines.
+        const lineBetweenMainLines = 4; 
+        return (((a - 1) * (lineBeteenMainLines + 1)) + 1) + b;
+    }
+
+    document.getElementById('collarForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Parse Inputs
+        const firstMainLine = parseInt(document.getElementById('firstMainLine').value);
+        const firstSubLine = parseInt(document.getElementById('firstSubLine').value);
+        const intST = parseInt(document.getElementById('intST').value);
+
+        const lastMainLine = parseInt(document.getElementById('lastMainLine').value);
+        const lastSubLine = parseInt(document.getElementById('lastSubLine').value);
+        const intET = parseInt(document.getElementById('intET').value);
+
+        // Logic replicate from Java
+        const timeDifference = Math.abs(intST - intET);
+        
+        const line1 = line(firstMainLine, firstSubLine);
+        const line2 = line(lastMainLine, lastSubLine);
+        const lineDifference = Math.abs(line1 - line2);
+
+        const resultText = document.getElementById('resultText');
+
+        if (lineDifference === 0) {
+            resultText.innerHTML = '<span class="error">Line positions are identical. Cannot divide by zero.</span>';
+            return;
+        }
+
+        const secondsPerLine = timeDifference / lineDifference;
+
+        // Output matching printf("Each line has ~%.2f seconds per line\n\n", secondsPerLine);
+        resultText.innerHTML = Each line has ~<strong>${secondsPerLine.toFixed(2)}</strong> seconds per line;
+    });
+
+    function resetForm() {
+        document.getElementById('collarForm').reset();
+        document.getElementById('resultText').innerHTML = 'Enter values and click Calculate';
+    }
+</script>
+
+</body>,
+</html>
